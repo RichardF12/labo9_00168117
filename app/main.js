@@ -115,40 +115,85 @@ http.createServer((req, res) => {
         });
     }
 
+    function collectRequestData(request, callback) {
+
+        const FORM_URLENCODED = 'application/x-www-form-urlencoded';
+        if (request.headers['content-type'] === FORM_URLENCODED) {
+            let body = '';
+            // Evento de acumulacion de data. 
+            request.on('data', chunk => {
+                body += chunk.toString();
+            });
+            // Data completamente recibida 
+            request.on('end', () => {
+                callback(null, parse(body));
+            });
+        } else {
+            callback({
+                msg: `The content-type don't is equals to ${FORM_URLENCODED}`
+            });
+        }
+    
+    }
+    
+
 
 }).listen(8081);
 
-function collectRequestData(request, callback) {
-
-    const FORM_URLENCODED = 'application/x-www-form-urlencoded';
-    if (request.headers['content-type'] === FORM_URLENCODED) {
-        let body = '';
-        // Evento de acumulacion de data. 
-        request.on('data', chunk => {
-            body += chunk.toString();
-        });
-        // Data completamente recibida 
-        request.on('end', () => {
-            callback(null, parse(body));
-        });
-    } else {
-        callback({
-            msg: `The content-type don't is equals to ${FORM_URLENCODED}`
-        });
-    }
-
-}
-
 /*
-1- llamar el modulo.
-2- Permite al usuario controlar los archivos desde cualquier parte del codigo
-3- Es un metodo para ordenar el documento y ayuda a ser ubicado más facilmente.
-4- Los datos del post y su estado, respectivamente.
-5- Si, ya que puede ser un puerto no valido o ya ocupado.
-6- para obtener el estado de la pagina y mostrarle al usuario solo lo necesario en caso de error.
-7- Para poder redireccionar a la pagina principal.
-8- Los datos sobre el estado de la petición.
-9- No veo la diferencia
-10- El resultado a imprimise
-11- Debido a que los datos que se requieren necesitan ser string, y los datos dentro del data no necesariamente son string
+1 - ¿Cuál es la principal función del módulo HTTP?
+
+// Llamar el modulo.
+
+2 - ¿Cuál es la principal función del módulo FileSystem?
+
+// Permite al usuario controlar los archivos desde cualquier parte del código
+
+3 - ¿Qué es un MIME type?
+
+// Es un método para ordenar el documento y ayuda a ser ubicado más fácilmente.
+
+4 - ¿Qué contienen las variables "req" y "res" en la creación del servidor?
+
+// Los datos del post y su estado, respectivamente.
+
+5 - ¿La instrucción .listen(number) puede fallar? Justifique.
+
+// Si, ya que puede ser un puerto no valido o ya ocupado.
+
+6 - ¿Por qué es útil la función "collectRequestData(...)"?
+
+// Porque nos sirve para obtener el estado de la pagina y mostrarle al usuario solo lo necesario en caso de error.
+
+7 - ¿Para qué, además de conocer la dirección de la petición, es útil la variable "pathname"?
+
+// Para poder facilitar el redireccionamiento.
+
+8 - ¿Qué contine el parametro "data"?
+
+// Los datos sobre el estado de la petición.
+
+9 - ¿Cuál es la diferencia entre brindar una respuesta HTML y brindar una CSS? 
+
+// El primero necesita un Mimetype textHTML y el archivo CSS se lee como texto plano.
+
+10 - ¿Qué contiene la variable "result"?
+
+// Son todos los datos que se enviaron en el formulario.
+
+11 - ¿Por qué con la variable "data" se debe aplicarse el metodo toString()? Justifique.
+
+// Debido a que los datos se necesitan en string y  los datos no necesariamente son del tipo string.
+
+12 - ¿Hay diferencia al quitar el control de peticiones para hojas CSS? Si sucedió algo distinto justifique por qué.
+
+// Si, solo no se carga la hoja de estilos y se ve el html puro.
+
+13 - ¿Se puede iniciar el servidor (node main.js) en cualquier sitio del proyecto? Cualquier respuesta justifique.
+
+// No, al intentar iniciarlo da error.
+
+14 - Con sus palabras, ¿Por qué es importante aprender Node.js sin el uso de frameworks a pesar que estos facilitan el manejo de API's?
+
+// Para entender como funcionan las variables que utilizamos y lo  cual nos facilita el entendimiento de errores permitiéndonos entender los algoritmos de mejor manera.
 */
